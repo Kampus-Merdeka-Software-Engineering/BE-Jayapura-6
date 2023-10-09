@@ -12,7 +12,7 @@ module.exports = function(app) {
 
   // get all product
   app.get(
-    "/api/product",
+    "/api/products",
     controller.getAllproduct
   );
 
