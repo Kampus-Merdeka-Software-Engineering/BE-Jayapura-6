@@ -24,7 +24,7 @@ require('./app/routes/user.routes')(app);
 require('./app/routes/product.routes')(app);
 require('./app/routes/order.routes')(app);
 
-const PORT = process.env.PORT || 9090;
-app.listen(PORT, () => {
+const port = process.env.PORT || 9090;
+app.listen(port, "0.0.0.0", () => {
   console.log(`Server is running on port ${PORT}.`);
 });
