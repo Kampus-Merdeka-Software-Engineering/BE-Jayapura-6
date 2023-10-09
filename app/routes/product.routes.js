@@ -13,7 +13,6 @@ module.exports = function(app) {
   // get all product
   app.get(
     "/api/product",
-    [authJwt.verifyToken],
     controller.getAllproduct
   );
 

@@ -10,10 +10,10 @@ app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
 
-// database
-const db = require("./app/models");
+// // database
+// const db = require("./app/models");
 
-db.sequelize.sync();
+// db.sequelize.sync();
 
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to Api olshop-capstone-project." });

@@ -1,7 +1,10 @@
 module.exports = (sequelize, Sequelize) => {
   const Product = sequelize.define("product", {
-    name: {
+    productName: {
       type: Sequelize.STRING
+    },
+    image: {
+      type: Sequelize.TEXT
     },
     category: {
       type: Sequelize.ENUM,
@@ -10,7 +13,10 @@ module.exports = (sequelize, Sequelize) => {
     price: {
       type: Sequelize.FLOAT
     },  
-  });
+  }, {
+    freezeTableName: true,
+    timestamps: false
+});
 
   return Product;
 };
