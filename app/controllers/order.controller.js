@@ -8,15 +8,15 @@ exports.getAllWishlish = async (req, res) => {
   try {
     const orders = await Order.findAll({
       where: {
-        status: 'wishlist'
-      }
+        status: "wishlist",
+      },
     });
 
     res.status(200).json(orders);
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
-}
+};
 
 exports.addToWishlist = async (req, res) => {
   const { user_id, product_id } = req.body;
@@ -31,7 +31,9 @@ exports.addToWishlist = async (req, res) => {
     });
 
     if (existingOrder) {
-      return res.status(400).json({ success: false, message: "Produk sudah ada di wishlist." });
+      return res
+        .status(400)
+        .json({ success: false, message: "Produk sudah ada di wishlist." });
     }
 
     const orderCode = await generateOrderCode();
@@ -84,37 +86,47 @@ exports.removeFromWishlist = async (req, res) => {
 };
 
 exports.addToCart = async (req, res) => {
-  const { user_id, product_id, address, payment_service, total_payment } = req.body;
+  const { user_id, product_id, address, payment_service, total_payment } =
+    req.body;
   const paymentProof = req.file ? req.file.path : null;
 
   try {
-    const status = (user_id && product_id && address && payment_service && total_payment && paymentProof) ? 'completed' : 'on progress';
+    const status =
+      user_id &&
+      product_id &&
+      address &&
+      payment_service &&
+      total_payment &&
+      paymentProof
+        ? "completed"
+        : "on progress";
 
-      // Jika ada file yang diunggah, simpan jalur file
-      const orderCode = await generateOrderCode();
-      const orderId = await generateOrderId();
-      const orderNumber = `${orderCode}${orderId}${generateDate()}`;
+    // Jika ada file yang diunggah, simpan jalur file
+    const orderCode = await generateOrderCode();
+    const orderId = await generateOrderId();
+    const orderNumber = `${orderCode}${orderId}${generateDate()}`;
 
-      const newCartItem = await Order.create({
-        no_order: orderNumber,
-        user_id: user_id,
-        product_id: product_id,
-        address: address,
-        status: status,
-        payment_service: payment_service,
-        total_payment: total_payment,
-        payment_proof: paymentProof,
-      });
+    const newCartItem = await Order.create({
+      no_order: orderNumber,
+      user_id: user_id,
+      product_id: product_id,
+      address: address,
+      status: status,
+      payment_service: payment_service,
+      total_payment: total_payment,
+      payment_proof: paymentProof,
+    });
 
-      res.status(201).json({
-        success: true,
-        message: 'Produk berhasil ditambahkan ke keranjang belanja.',
-        cartItem: newCartItem,
-      });    
+    res.status(201).json({
+      success: true,
+      message: "Produk berhasil ditambahkan ke keranjang belanja.",
+      cartItem: newCartItem,
+    });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'Gagal menambahkan produk ke keranjang belanja: ' + error.message,
+      message:
+        "Gagal menambahkan produk ke keranjang belanja: " + error.message,
     });
   }
 };
@@ -126,7 +138,9 @@ exports.updateToCart = async (req, res) => {
   try {
     const order = await Order.findByPk(orderId);
     if (!order) {
-      return res.status(404).json({ success: false, message: 'Pesanan tidak ditemukan.' });
+      return res
+        .status(404)
+        .json({ success: false, message: "Pesanan tidak ditemukan." });
     }
 
     let updatedPaymentProof = null;
@@ -135,17 +149,56 @@ exports.updateToCart = async (req, res) => {
       updatedPaymentProof = req.file.path;
     }
 
-    await order.update({ payment_proof: updatedPaymentProof, status: 'completed' });
+    await order.update({
+      payment_proof: updatedPaymentProof,
+      status: "completed",
+    });
 
     return res.status(200).json({
       success: true,
-      message: 'Keranjang belanja berhasil diperbarui.',
-      updatedOrderId: orderId
+      message: "Keranjang belanja berhasil diperbarui.",
+      updatedOrderId: orderId,
     });
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: 'Gagal memperbarui keranjang belanja: ' + error.message
+      message: "Gagal memperbarui keranjang belanja: " + error.message,
+    });
+  }
+};
+
+exports.listCartByUserId = async (req, res) => {
+  const userId = req.params.user_id;
+
+  try {
+    const order = await Order.findAll({ where: { user_id: userId } });
+
+    return res.status(200).json({
+      success: true,
+      listCart: order,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Gagal mengambil cart: " + error.message,
+    });
+  }
+};
+
+exports.detailCartByUserId = async (req, res) => {
+  const orderId = req.params.order_id;
+
+  try {
+    const order = await Order.findByPk(orderId);
+
+    return res.status(200).json({
+      success: true,
+      listCart: order,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Gagal mengambil cart: " + error.message,
     });
   }
 };

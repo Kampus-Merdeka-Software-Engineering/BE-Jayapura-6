@@ -48,4 +48,17 @@ module.exports = function(app) {
     controller.updateToCart
   );
 
+//list cart by user id
+app.get(
+  "/api/order/list-cart/user/:user_id",
+  [authJwt.verifyToken],
+  controller.listCartByUserId
+);
+
+//list detail cart by order id
+app.get(
+  "/api/order/list-cart/user/:user_id/detail/:order_id",
+  [authJwt.verifyToken],
+  controller.detailCartByUserId
+);
 };
