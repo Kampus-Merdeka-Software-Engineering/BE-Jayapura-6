@@ -1,10 +1,10 @@
 const db = require("../models");
 const Product = db.product;
 
-exports.getAllProducts = async (req, res) => {
+exports.getAllproduct = async (req, res) => {
   try {
-    const products = await Product.findAll();
-    res.status(200).json(products);
+    const product = await Product.findAll();
+    res.status(200).json(product);
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -12,14 +12,14 @@ exports.getAllProducts = async (req, res) => {
 
 exports.getHotProduct = async (req, res) => {
   try {
-    const hotProducts = await Product.findAll({
+    const hotproduct = await Product.findAll({
       order: [['rating', 'DESC']],
       limit: 4
     });
 
     res.status(200).json({
       success: true,
-      hotProducts: hotProducts
+      hotproduct: hotproduct
     });
   } catch (error) {
     res.status(500).json({
@@ -31,14 +31,14 @@ exports.getHotProduct = async (req, res) => {
 
 exports.getArrivalProduct = async (req, res) => {
   try {
-    const hotProducts = await Product.findAll({
+    const hotproduct = await Product.findAll({
       order: [['createdAt', 'DESC']],
       limit: 4
     });
 
     res.status(200).json({
       success: true,
-      hotProducts: hotProducts
+      hotproduct: hotproduct
     });
   } catch (error) {
     res.status(500).json({

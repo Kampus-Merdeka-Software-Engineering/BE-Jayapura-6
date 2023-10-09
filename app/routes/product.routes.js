@@ -12,9 +12,9 @@ module.exports = function(app) {
 
   // get all product
   app.get(
-    "/api/products",
+    "/api/product",
     [authJwt.verifyToken],
-    controller.getAllProducts
+    controller.getAllproduct
   );
 
   // get product by rating

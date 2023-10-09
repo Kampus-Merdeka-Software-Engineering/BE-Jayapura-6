@@ -13,7 +13,8 @@ const sequelize = new Sequelize(
       min: config.pool.min,
       acquire: config.pool.acquire,
       idle: config.pool.idle
-    }
+    },
+    port: config.PORT
   }
 );
 

@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-  const Product = sequelize.define("products", {
+  const Product = sequelize.define("product", {
     name: {
       type: Sequelize.STRING
     },
@@ -9,13 +9,7 @@ module.exports = (sequelize, Sequelize) => {
     },
     price: {
       type: Sequelize.FLOAT
-    },
-    price_discount: {
-      type: Sequelize.FLOAT
-    },
-    rating: {
-      type: Sequelize.INTEGER
-    },    
+    },  
   });
 
   return Product;
