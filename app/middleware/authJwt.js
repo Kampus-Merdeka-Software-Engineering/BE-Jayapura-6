@@ -3,10 +3,12 @@ const config = require("../config/auth.config.js");
 
 verifyToken = (req, res, next) => {
   let token = req.headers["authorization"];
-
+  console.log(token);
+  
   // jika pakai authorization bearer token
   if(token && token.startsWith('Bearer')) {
     token = token.slice(7, token.length);
+    console.log(token);
   }
 
   if (!token) {
