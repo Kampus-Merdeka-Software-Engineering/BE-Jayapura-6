@@ -36,7 +36,6 @@ module.exports = function(app) {
   app.post(
     "/api/order/add-cart",
     upload.single('payment_proof'),
-    [authJwt.verifyToken],
     controller.addToCart
   );
 
